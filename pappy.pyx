@@ -1376,7 +1376,7 @@ def paOpenDefaultStream(numInputChannels, numOutputChannels, sampleFormat, sampl
 	streamPtr = <PaStream *>pyStream
 	
 	if (pyUserData):
-		userDataPtr = <void *>pyUserData[0]
+		userDataPtr = <void *>pyUserData
 	else:
 		userDataPtr = NULL
 	

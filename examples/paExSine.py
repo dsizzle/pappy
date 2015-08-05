@@ -1,12 +1,12 @@
 #!/opt/local/bin/python2.5
-# @file paTestSine.py
-#	@ingroup test_src
+# @file paExSine.py
+#	@ingroup examples_src
 #	@brief Play a sine wave for several seconds.
-#       @author Dale Cieslak <desizzle@users.sourceforge.net>
+#       @author Dale Cieslak <dsizzle@github>
 #	@author (C program by Ross Bencina <rossb@audiomulch.com>)
 #	@author (C program by Phil Burk <philburk@softsynth.com>)
 #
-# $Id: paTestSine.py 1 2010-04-28 12:51:15Z dale $
+# $Id: paExSine.py 1 2010-04-28 12:51:15Z dale $
 # 
 # This program uses the PortAudio Portable Audio Library.
 # For more information see: http://www.portaudio.com
@@ -70,6 +70,7 @@ def paCallbackWrapper(userData):
 			if (userData['left_phase'] >= gTableSize):
 				userData['left_phase'] -= gTableSize
 			
+			# higher pitch so we can distinguish left and right
 			userData['right_phase'] += 3 
 			if (userData['right_phase'] >= gTableSize):
 				userData['right_phase'] -= gTableSize
@@ -153,7 +154,7 @@ def main():
 		return 0
 	
 	except SystemError:
-		paTerminate()
+		pappy.paTerminate()
 		sys.stderr.write("An error occured while using the portaudio stream")
 		sys.stderr.write("Error number: %d" % err)
 		sys.stderr.write("Error message: %s" % pappy.paGetErrorText(err))

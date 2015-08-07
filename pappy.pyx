@@ -1,4 +1,6 @@
 from time import sleep
+import array
+import struct
 
 cdef extern from "Python.h":
 	object PyCObject_FromVoidPtr( void* cobj, void (*destr)(void *))
@@ -961,26 +963,29 @@ cdef int Pa_StreamCallbackWrapper(void *inputBuffer, void *outputBuffer, unsigne
 	cdef float *headPtr
 	cdef float foo
 	
-	pyOut = None
+	pyOut = array.array('f')
 	pyErr = None
 	
-	pyInputBuffer = PyCObject_FromVoidPtr(inputBuffer, NULL)
+	pyInputBuffer = array.array('f')
+	
+	if (inputBuffer != NULL): 
+		tmpPtr = <float *>inputBuffer
+		for i in range(0, framesPerBuffer):
+			pyInputBuffer.append(tmpPtr[i]) 
+		
 	cbs = <object>(userData)
 	
 	(pyErr, pyOut) = (cbs['streamcallback'])(pyInputBuffer, framesPerBuffer, None, statusFlags) 
 	tmpPtr = <float *>outputBuffer
-	headPtr = tmpPtr
 	for i in range(0, len(pyOut)):
-		tmpPtr[0] = pyOut[i] #<float>(pyOut[i])
+		tmpPtr[0] = pyOut[i] 
 		tmpPtr = tmpPtr+1
-	tmpPtr = headPtr	
-	outputBuffer = <void *>tmpPtr
 	
 	return pyErr
 
 	
 cdef void Pa_StreamFinishedCallbackWrapper(void *userData) with gil:
-	cbs = <object>(userData) #PyCObject_FromVoidPtr(userData, NULL)
+	cbs = <object>(userData) 
 	if (cbs['finishedcallback']):
 		cbs['finishedcallback']()
 	

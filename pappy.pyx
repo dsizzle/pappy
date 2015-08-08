@@ -1360,11 +1360,13 @@ def paOpenStream(pyInputParamDict, pyOutputParamDict, sampleRate, framesPerBuffe
 
 	if (pyUserData):
 		userDataPtr = <void *>pyUserData
+		streamCallbackPtr = <PaStreamCallback *>Pa_StreamCallbackWrapper
 	else:
 		userDataPtr = NULL
-			
-	streamCallbackPtr = <PaStreamCallback *>Pa_StreamCallbackWrapper
-	error = Pa_OpenStream(&streamPtr, inputParamPtr, outputParamPtr, sampleRate, framesPerBuffer, streamFlags, streamCallbackPtr, userDataPtr) #NULL, NULL) #streamCallbackPtr, NULL) #userDataPtr)
+		streamCallbackPtr = NULL
+
+	error = Pa_OpenStream(&streamPtr, inputParamPtr, outputParamPtr, sampleRate, framesPerBuffer, streamFlags, streamCallbackPtr, userDataPtr)
+
 	returnStream = <void *>streamPtr
 	pyStream = PyCObject_FromVoidPtr(returnStream, NULL)
 	return error, pyStream 
@@ -1382,10 +1384,11 @@ def paOpenDefaultStream(numInputChannels, numOutputChannels, sampleFormat, sampl
 	
 	if (pyUserData):
 		userDataPtr = <void *>pyUserData
+		streamCallbackPtr = <PaStreamCallback *>Pa_StreamCallbackWrapper
 	else:
 		userDataPtr = NULL
+		streamCallbackPtr = NULL
 	
-	streamCallbackPtr = <PaStreamCallback *>Pa_StreamCallbackWrapper
 	error = Pa_OpenDefaultStream(&streamPtr, numInputChannels, numOutputChannels, sampleFormat, sampleRate, framesPerBuffer, streamCallbackPtr, userDataPtr)
 	
 	returnStream = <void *>streamPtr
@@ -1507,8 +1510,11 @@ def paReadStream(pyStream, frames):
 def paWriteStream(pyStream, pyBuffer, frames):
 	cdef PaStream *streamPtr
 	streamPtr = <PaStream *>PyCObject_AsVoidPtr(pyStream)
-	
-	error = Pa_WriteStream(streamPtr, <void *>pyBuffer, frames)
+	cdef void *buffer
+
+	buffer = <void *>pyBuffer
+
+	error = Pa_WriteStream(streamPtr, buffer, frames)
 	
 	return error
 

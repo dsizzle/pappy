@@ -1514,7 +1514,7 @@ def paWriteStream(pyStream, pyBuffer, frames):
 
 	buffer = <void *>pyBuffer
 
-	error = Pa_WriteStream(streamPtr, buffer, frames)
+	error = Pa_WriteStream(streamPtr, <void *>pyBuffer, frames)
 	
 	return error
 

@@ -11,10 +11,10 @@ setup(name='pappy',
 			libraries=['portaudio'],				\
 		)],
 	cmdclass = {'build_ext': build_ext},			\
-	description='Python Distribution Utilities',	\
+	description='PortAudio wrapped in Python',	\
 	author='Dale Cieslak',							\
-	author_email='desizzle@users.sourceforge.net',	\
-	url='http://pappy.sourceforge.net/',			\
+	author_email='dsizzle@github.com',	\
+	url='https://github.com/dsizzle/pappy',			\
 )
 
 

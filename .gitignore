@@ -42,8 +42,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# build folder
+build
+
 # binary files
 .pyd
 .o
+.so
 
 

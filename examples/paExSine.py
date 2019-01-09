@@ -108,7 +108,7 @@ def main():
 		outputParameters = {}
 		outputParameters['device'] = pappy.paGetDefaultOutputDevice()
 		if (outputParameters['device'] == pappy.pyPaNoDevice):
-			sys.stderr.write("ERROR: no default output device")
+			sys.stderr.write("ERROR: no default output device\n")
 			raise SystemError
 
 		outputParameters['channelCount'] = 2
@@ -155,9 +155,9 @@ def main():
 	
 	except SystemError:
 		pappy.paTerminate()
-		sys.stderr.write("An error occured while using the portaudio stream")
-		sys.stderr.write("Error number: %d" % err)
-		sys.stderr.write("Error message: %s" % pappy.paGetErrorText(err))
+		sys.stderr.write("An error occured while using the portaudio stream\n")
+		sys.stderr.write("Error number: %d\n" % err)
+		sys.stderr.write("Error message: %s\n" % pappy.paGetErrorText(err))
 		return err
 
 sys.exit(main())
